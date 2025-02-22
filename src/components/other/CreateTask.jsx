@@ -12,30 +12,44 @@ const CreateTask = () => {
     const [category, setCategory] = useState('')
 
     const [newTask, setNewTask] = useState({})
-
     const submitHandler = (e) => {
         e.preventDefault()
-
-        setNewTask({ taskTitle, taskDescription, taskDate, category, active: false, newTask: true, failed: false, completed: false })
-
-        const data = userData
-
+    
+        // Create the task object
+        const task = {
+            taskTitle,
+            taskDescription,
+            taskDate,
+            category,
+            active: false,
+            newTask: true,
+            failed: false,
+            completed: false
+        }
+    
+        const data = [...userData] // Copy the user data to avoid mutating the context directly
+    
+        // Iterate over users and assign the task
         data.forEach(function (elem) {
-            if (asignTo == elem.firstName) {
-                elem.tasks.push(newTask)
-                elem.taskCounts.newTask = elem.taskCounts.newTask + 1
+            if (asignTo === elem.firstName) {
+                elem.tasks.push(task) // Add the new task
+                elem.taskCounts.newTask = elem.taskCounts.newTask + 1 // Update the task count
             }
         })
-        setUserData(data)
-        console.log(data);
-
+    
+        setUserData(data) // Update context with the modified data
+        console.log(data)
+    
+        // Reset form fields
         setTaskTitle('')
         setCategory('')
         setAsignTo('')
         setTaskDate('')
         setTaskDescription('')
-
     }
+    
+
+    
 
     return (
         <div className='p-5 bg-[#1c1c1c] mt-5 rounded'>
